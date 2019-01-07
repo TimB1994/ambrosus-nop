@@ -70,10 +70,12 @@ describe('Setup Creator', () => {
     const privateKeyPlaceholder = '<ENTER_YOUR_PRIVATE_KEY_HERE>';
     const headAddressPlaceholder = '<ENTER_YOUR_HEAD_CONTRACT_ADDRESS_HERE>';
     const networkNamePlaceholder = '<ENTER_NETWORK_NAME_HERE>';
+    const ambrosusNodeImageTagPlaceHolder = '<ENTER_AMBROSUS_NODE_DOCKER_TAG_HERE>';
 
     const examplePrivateKey = '0xbeefcafe';
     const exampleHeadAddress = '0xdeadface';
-    const exampleNetworkName = 'amb-net';
+    const exampleNetworkName = 'ambnet-dev';
+    const exampleAmbrosusNodeImageTag = 'dev';
 
     const sampleForm = (arg1, arg2, arg3, arg4) => `${arg1} || ${arg2} || ${arg3} || ${arg4}`;
 
@@ -84,7 +86,12 @@ describe('Setup Creator', () => {
 
     beforeEach(async () => {
       await makeDirectory(`${testInputDir}${nodeTypeName}`);
-      await writeFile(templateFilePath, sampleForm(privateKeyPlaceholder, headAddressPlaceholder, networkNamePlaceholder));
+      await writeFile(templateFilePath, sampleForm(
+        privateKeyPlaceholder,
+        headAddressPlaceholder,
+        networkNamePlaceholder,
+        ambrosusNodeImageTagPlaceHolder
+      ));
     });
 
     afterEach(async () => {
@@ -94,8 +101,19 @@ describe('Setup Creator', () => {
     });
 
     it('creates file correctly', async () => {
-      await setupCreator.prepareDockerComposeFile(nodeTypeName, examplePrivateKey, exampleHeadAddress, exampleNetworkName);
-      expect(await readFile(destinationFilePath)).to.deep.equal(sampleForm(examplePrivateKey, exampleHeadAddress, exampleNetworkName));
+      await setupCreator.prepareDockerComposeFile(
+        nodeTypeName,
+        examplePrivateKey,
+        exampleHeadAddress,
+        exampleNetworkName,
+        exampleAmbrosusNodeImageTag
+      );
+      expect(await readFile(destinationFilePath)).to.deep.equal(sampleForm(
+        examplePrivateKey,
+        exampleHeadAddress,
+        exampleNetworkName,
+        exampleAmbrosusNodeImageTag
+      ));
     });
   });
 

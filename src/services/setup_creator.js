@@ -40,6 +40,9 @@ export default class SetupCreator {
     dockerFile = dockerFile.replace(/<ENTER_YOUR_PRIVATE_KEY_HERE>/gi, privateKey);
     dockerFile = dockerFile.replace(/<ENTER_YOUR_HEAD_CONTRACT_ADDRESS_HERE>/gi, headContractAddress);
     dockerFile = dockerFile.replace(/<ENTER_NETWORK_NAME_HERE>/gi, networkName);
+    // The network name is expected to be ambnet-(dev|test|prod)
+    const [, ambrosusNodeImageTag] = networkName.split('-');
+    dockerFile = dockerFile.replace(/<ENTER_AMBROSUS_NODE_DOCKER_TAG_HERE>/gi, ambrosusNodeImageTag);
 
     await writeFile(path.join(this.outputDirectory, dockerFileName), dockerFile);
   }
